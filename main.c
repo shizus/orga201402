@@ -2,15 +2,16 @@
 #include <getopt.h>
 #include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 void imprime_uso();
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {	
 	FILE * archivo=NULL;
 	int primeraLinea,incremento,cantidadVaciasJuntas;
-	char siguiente_opcion;
-  unsigned char * separador;
+	int siguiente_opcion;
+  const char * separador=NULL;
 	int numerarVacias;
 	  /* Una cadena que lista las opciones cortas válidas */
   	const char* const op_cortas = "hs::v::i::t::l::" ;
@@ -46,18 +47,19 @@ int main(int argc, char const *argv[])
               imprime_uso();
               exit(EXIT_SUCCESS);
 			  
-          case 's' : 
-              separador = optarg ;
-              printf("Separador\n");
+          case 's' :
+          
+              separador=optarg;
+              printf("Separador %s\n",separador);
               break;
 			  
           case 'v' : /* -o ó --output */
-              primeraLinea = optarg; /* optarg contiene el argumento de -o */
+              //primeraLinea = optarg; /* optarg contiene el argumento de -o */
               printf("primera linea\n");
               break;
 
           case 'i' : /* -o ó --output */
-              incremento = optarg; /* optarg contiene el argumento de -o */
+              //incremento = optarg; /* optarg contiene el argumento de -o */
               printf("incremento\n");
               break;
 
@@ -67,7 +69,7 @@ int main(int argc, char const *argv[])
               break;         
 
           case 'l' : /* -o ó --output */
-              cantidadVaciasJuntas = optarg; /* optarg contiene el argumento de -o */
+              //cantidadVaciasJuntas = optarg; /* optarg contiene el argumento de -o */
               printf("cantidadVaciasJuntas\n");
               break;
 			  
@@ -89,5 +91,16 @@ int main(int argc, char const *argv[])
 
 
 void imprime_uso(){
-  printf("SE USA ASI\n");
+  printf("USAGE:\n"
+  "tp0 [OPTION]...[FILE]...\n"
+  "Write each FILE to standard output, with line numbers added. With no FILE, or when FILE ir -,\n"
+  "read standard input\n"
+  "\n"
+  "OPTIONS:\n"
+  "-h, --help Print this message and quit\n"
+  "-s, --number-separator (mandatory argument)\n"
+  "-v, --starting-line-number (mandatory argument)\n"
+  "-i, --line-increment (mandatory argument)\n"
+  "-l, --join-blank-lines (mandatory argument)\n"
+  "-t, --non-empty\n");
 };
