@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
   const char * separador=NULL;
 	int numerarVacias;
 	  /* Una cadena que lista las opciones cortas válidas */
-  	const char* const op_cortas = "hs::v::i::t::l::" ;
+  	const char* const op_cortas = "hs:v:i:t:l:" ;
 
 	  /* Una estructura de varios arrays describiendo los valores largos */
 	  const struct option op_largas[] =
@@ -54,8 +54,8 @@ int main(int argc, char *argv[])
               break;
 			  
           case 'v' : /* -o ó --output */
-              //primeraLinea = optarg; /* optarg contiene el argumento de -o */
-              printf("primera linea\n");
+              primeraLinea = atoi(optarg); /* optarg contiene el argumento de -o */
+              printf("primera linea%d\n",primeraLinea);
               break;
 
           case 'i' : /* -o ó --output */
