@@ -16,6 +16,8 @@ int main(int argc, char *argv[])
 	char * archivo=NULL;
 	const char * separador=NULL;
 	int numerarVacias=1;
+	incremento=1;
+	primeraLinea=1;
 
 	/* Una cadena que lista las opciones cortas válidas */
 	const char* const op_cortas = "hs:v:i:tl:" ;
@@ -192,7 +194,6 @@ void procesarArchivo(const char * separador,int primeraLinea,int incremento,int 
 						lineaVacia=1;
 
 					}
-					//lineaActual= lineaActual + incremento;
 					lineasVaciasAcumuladas=0;
 				}
 
