@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
 		case 'V' : /* -V o --version*/
 			
-			printf("version \n");
+			printf("Tp1 version 1.0 \n");
 			break;
 
 		case 'i' : /* -i o --input*/
