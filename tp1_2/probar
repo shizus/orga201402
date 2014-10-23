@@ -1,0 +1,2 @@
+gcc -o tp1 validate.c TpOrga1.c
+./tp1 -h
