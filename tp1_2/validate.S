@@ -67,31 +67,57 @@ validate:
 		sw 	ra, RA(sp)		# guardo valor de ra
 		move 	$fp, sp
 
-		sw 	a0, A0(sp)		# cargo parametro char * text en t0
-		sw 	a1, A1(sp)		# cargo parametro char ** errmsg en t1
+		sw 	a0, A0(sp)		# cargo parametro char * text 
+		sw 	a1, A1(sp)		# cargo parametro char ** errmsg 
 
 #		la a0,texto
 #		la t9,printf
 #		jal t9
 
 #		la a0,texto
-#		jal strlen
+		jal strlen			#calcula la longitud de text (parametro A0)
+		
+		beqz v0,fin			#termina si tiene longitud cero
+		
+#while1:						#posApertura=strchr(text+posApertura,'<')-text;
+		la t3,posApertura		#copio la direccion de la variable posApertura en t3
+		lw t0,0(t3)			#obtengo el valor de posApertura y lo guardo en t0
+		
 
-#		addu a1,zero,v0
+		lw t1,A0(sp) 			#obtengo la variable text
+
+		addu a0,t1,t0			#sumo text+posApertura
+					
+		la a1,ABIERTO			#cargo '<' en a1
+		#TODO:revisar porque no devuelve bien el puntero a char * PREGUNTAR
+		#jal strchr			#llamo a la funcion strchr
+		
+
+		#subu t0,v0,t1			#strchr(text+posApertura,'<')-text
+	
+		#sw t0,0(t3)			#guardo en posApertura
+		
+		#la a0,posApertura
+		#jal printf
+		#j fin
+		
+				
+	
+#		la a1,posApertura
 #		la a0,entero
 #		jal printf
 
-		la a0,tag
-		la a1,texto
-		jal mystrcpy
+#		la a0,tag
+#		la a1,texto
+#		jal mystrcpy
 		
 #		la t2, tag
 #		lb t1,0(t2)
 #		addi t1,zero,64
 #		sb t1,0(t2)
 
-		la a0,tag
-		jal printf
+#		la a0,tag
+#		jal printf
 		j fin		
 mystrcpy:
 		lb t0,0(a1)
@@ -123,15 +149,15 @@ fin:
 texto:		.asciiz "af"
 ABIERTO:	.asciiz "<"
 CERRADO:	.asciiz ">"
-posApertura:	.word '0'
-posCierre: 	.word '0'
-resultado:	.word '0'
-lineaError:	.word '0'
-contadorTags:	.word '0'
+posApertura:	.word 3
+posCierre: 	.word 0
+resultado:	.word 0
+lineaError:	.word 0
+contadorTags:	.word 0
 tag:	.space 20
 
 entero:
-	.asciiz "%d"
+	.asciiz "%d\n"
 
 #	char  vTag[20][10];
 #	char tag[10]="";
