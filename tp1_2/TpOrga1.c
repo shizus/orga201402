@@ -47,12 +47,12 @@ int main(int argc, char *argv[])
 
 		case 'i' : /* -i o --input*/
 			n = strcmp("-",optarg);
-			if(n == 0){
+			if(n == 0){ 
 				archivo=NULL;
 			}else{
 				archivo=optarg;
 		}
-			printf("input %s\n",archivo);
+		//	printf("input %s\n",archivo);
 			break;
 
 		case '?' : /* opción no valida */
@@ -67,19 +67,26 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (archivo == NULL) {
-		archivo = stdin;	
+	if (archivo == NULL) { // entonces la entrada es stdin
+		entrada = stdin;	
+	}else {
+		entrada = fopen(archivo, "r"); 
 	}
-	entrada = fopen(archivo, "r");
-	//entrada=fopen("/home/nico/workspace/Tp Datos/ORGATP0/Debug/entrada.txt","r");
-	fseek(entrada,0,SEEK_END);
-	int tamanioArchivo=ftell(entrada);
-	char * buffer = (char*) malloc(tamanioArchivo+1);
+	
+	int tamanioArchivo = 1000;
+	if (archivo != NULL) { // entonces la entrada no es stdin
+		fseek(entrada,0,SEEK_END);
+		tamanioArchivo = ftell(entrada);
+	}
+	char* buffer = (char*) malloc(tamanioArchivo+1);
 	strcpy(buffer,"");
 	char c;
 	int longitud;
 
-	fseek(entrada,0,SEEK_SET);
+
+	if (archivo != NULL) { // entonces la entrada no es stdin
+		fseek(entrada,0,SEEK_SET);
+	}
 	while ((c=getc(entrada))!=EOF){
 		longitud =strlen(buffer);
 		*(buffer+longitud)=c;
@@ -93,22 +100,21 @@ int main(int argc, char *argv[])
 	error =validate (buffer, errmsg);
 
 	if (error!=0){
-		printf("%s",*errmsg);
+		printf("%s\n",*errmsg);
 	}else
 		printf("%s",buffer);
 
 	free (buffer);
 	free (errmsg[0]);
 	free (errmsg);
-	return error;
-	if (archivo != stdin) {	
+	if (archivo != NULL) {	
 		fclose(entrada);
 	}
-	return 0;
+	return error;
 }
 
 
-void imprime_uso(){
+void imprime_uso() {
 	printf("USAGE:\n"
 			"tp1 -h\n"
 			"tp1 -V\n"
