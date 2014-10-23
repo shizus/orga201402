@@ -44,9 +44,6 @@ int main(int argc, char *argv[])
 
 			printf("Tp1 version 1.0 \n");
 			break;
-		case 'v' : /* -v o --version*/
-                	printf("Tp1 version 1.0 \n");
-			break;
 
 		case 'i' : /* -i o --input*/
 			n = strcmp("-",optarg);
@@ -74,36 +71,36 @@ int main(int argc, char *argv[])
 		archivo = stdin;	
 	}
 	entrada = fopen(archivo, "r");
-//	//entrada=fopen("/home/nico/workspace/Tp Datos/ORGATP0/Debug/entrada.txt","r");
-//	fseek(entrada,0,SEEK_END);
-//	int tamanioArchivo=ftell(entrada);
-//	char * buffer = (char*) malloc(tamanioArchivo+1);
-//	strcpy(buffer,"");
-//	char c;
-//	int longitud;
-//
-//	fseek(entrada,0,SEEK_SET);
-//	while ((c=getc(entrada))!=EOF){
-//		longitud =strlen(buffer);
-//		*(buffer+longitud)=c;
-//		*(buffer + longitud +1)='\0';
-//	}
-//
-//
-//	char ** errmsg= malloc(sizeof(char*));
-//	int error=0;
-//
-//	error =validate (buffer, errmsg);
-//
-//	if (error!=0){
-//		printf("%s",*errmsg);
-//	}else
-//		printf("%s",buffer);
-//
-//	free (buffer);
-//	free (errmsg[0]);
-//	free (errmsg);
-//	return error;
+	//entrada=fopen("/home/nico/workspace/Tp Datos/ORGATP0/Debug/entrada.txt","r");
+	fseek(entrada,0,SEEK_END);
+	int tamanioArchivo=ftell(entrada);
+	char * buffer = (char*) malloc(tamanioArchivo+1);
+	strcpy(buffer,"");
+	char c;
+	int longitud;
+
+	fseek(entrada,0,SEEK_SET);
+	while ((c=getc(entrada))!=EOF){
+		longitud =strlen(buffer);
+		*(buffer+longitud)=c;
+		*(buffer + longitud +1)='\0';
+	}
+
+
+	char ** errmsg= malloc(sizeof(char*));
+	int error=0;
+
+	error =validate (buffer, errmsg);
+
+	if (error!=0){
+		printf("%s",*errmsg);
+	}else
+		printf("%s",buffer);
+
+	free (buffer);
+	free (errmsg[0]);
+	free (errmsg);
+	return error;
 	if (archivo != stdin) {	
 		fclose(entrada);
 	}
