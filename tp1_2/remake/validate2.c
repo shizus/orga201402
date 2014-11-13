@@ -20,7 +20,7 @@ int validate(char *text, char **errmsg){
 
 // Es necesario pasarle el valor del puntero al texto para que al avanzar en la lectura, este avance valga para todas
 // las llamadas a la funcion. Sino al  terminar una llamada, se seguiria del ultimo caracter despues de llamar.
-int validateRecursivo(char* currentTag, char** pointerToText, char **errmsg) {
+int validateRecursivo(char* currentTag, char** pointerToText, char **foundTag) {
 	char* newTag;
 	char* text = *pointerToText;
 	int resultadoRecursivo = 0;
@@ -29,10 +29,16 @@ int validateRecursivo(char* currentTag, char** pointerToText, char **errmsg) {
 		if (*text == '<'){
 			newTag = readTag(pointerToText);
 			if (isClosingTag(newTag)){
-				return analizeMatch(currentTag, newTag, errmsg);	
+				int result = are_equal(currentTag, *foundTag);
+				foundTag = newTag;
+				return result;
 			} else {
-				 resultadoRecursivo = validateRecursivo(newTag, pointerToText, errmsg);
-				//si no hay error sigo como si nada viendo los carateres que siguen
+				 resultadoRecursivo = validateRecursivo(newTag, pointerToText, foundTag);
+				 if (resultadoRecursivo == 0) { //hubo error
+				 	return analizeMatch(currentTag, foundTag, foundTag);
+				 }else {
+				 	return resultado;
+				 }
 				//si hay error tengo que ver si el tag que yo busco aparecio en algun momento	
 			}	
 		}else {
@@ -64,5 +70,35 @@ char* readTag(char** pointerToText) {
 int analizeMatch(char* currentTag, char* foundTag, char** errmsg) {
 	//si currentTag == foundTag (habiendole sacado el / inicial) entonces todo bien
 	// sino hay que ver en que caso de error estamos
-	return 0;
+	s2 = prepareClosingTag(s2);
+	if (are_equal(currentTag, foundTag)) {
+		return 2; // tag que ha sido abierto cerrado en mal momento	
+	}else {
+		return 1; // el tag cerrado no corresponde a este ciclo.
+	}
+	
+}
+
+int are_equal(const struct string *s1, const struct string *s2)
+{
+	s2 = prepareClosingTag(s2);
+    if (s1->length != s2->length)
+        return 0; // They must be different
+    for (int i = 0; i < s1->length; i++)
+    {
+        if (s1->c[i] != s2->c[i])
+            return 0;  // They are different
+    }
+    return 1;  // They must be the same
+}
+
+char* prepareClosingTag(char* closingTag) {
+	char *p;
+    
+	if ('/' == closingTag[0]) {
+		p = strtok(input, "/");
+	   p = strtok(NULL, "/");
+		return p;
+	}
+	return closingTag;
 }
