@@ -31,10 +31,13 @@ int validateRecursivo(char* currentTag, char** pointerToText, char **foundTag) {
 			if (isClosingTag(newTag)){
 				int result = are_equal(currentTag, *foundTag);
 				foundTag = newTag;
-				return result;
+				if (result) { //si son iguales devuelvo 0 (TODO OK)
+					return 0;
+				}
+				return 1; // si no son iguales devuelvo 1 (error: tag de cierre desconocido)
 			} else {
 				 resultadoRecursivo = validateRecursivo(newTag, pointerToText, foundTag);
-				 if (resultadoRecursivo == 0) { //hubo error
+				 if (resultadoRecursivo == 1) { //hubo error
 				 	return analizeMatch(currentTag, foundTag, foundTag);
 				 }else {
 				 	return resultado;
@@ -45,7 +48,7 @@ int validateRecursivo(char* currentTag, char** pointerToText, char **foundTag) {
 			*pointerToText++; //avanzo en el texto
 		}		
 	}	
-	// si encuentro un cierre veo si es el que estoy buscando
+	return	// si encuentro un cierre veo si es el que estoy buscando
 	// si es el que busco devuelvo codigo de exito
 	// si no es el que busco devuelvo codigo de error
 
@@ -72,6 +75,7 @@ int analizeMatch(char* currentTag, char* foundTag, char** errmsg) {
 	// sino hay que ver en que caso de error estamos
 	s2 = prepareClosingTag(s2);
 	if (are_equal(currentTag, foundTag)) {
+		//TODO sobreescribir errmsg con el mensaje de error a mostrar
 		return 2; // tag que ha sido abierto cerrado en mal momento	
 	}else {
 		return 1; // el tag cerrado no corresponde a este ciclo.
